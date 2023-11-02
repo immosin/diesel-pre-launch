@@ -12,26 +12,20 @@ IPAddress subnet(255,255,255,0);
 
 ESP8266WebServer server(80);
 
-uint8_t relay1Pin    = D5;
-bool    relay1status = LOW;
+#define RELAY_COUNT 4
 
-uint8_t relay2Pin    = D6;
-bool    relay2status = LOW;
-
-uint8_t relay3Pin    = D7;
-bool    relay3status = LOW;
-
-uint8_t relay4Pin    = D8;
-bool    relay4status = LOW;
-
+uint8_t relayPins   [RELAY_COUNT] = {D5, D6, D7, D8};
+bool    relayStates [RELAY_COUNT] = {LOW, LOW, LOW, LOW};
 
 void setup()
 {
   Serial.begin(115200);
-  pinMode(relay1Pin, OUTPUT);
-  pinMode(relay2Pin, OUTPUT);
-  pinMode(relay3Pin, OUTPUT);
-  pinMode(relay4Pin, OUTPUT);
+
+  for (size_t i = 0; i < RELAY_COUNT; i++)
+  {
+    pinMode(     relayPins[i], OUTPUT);
+    digitalWrite(relayPins[i], LOW);
+  }
 
   WiFi.softAP(ssid, password);
   WiFi.softAPConfig(local_ip, gateway, subnet);
@@ -49,6 +43,12 @@ void setup()
 }
 void loop() {
   server.handleClient();
+
+    for (size_t i = 0; i < RELAY_COUNT; i++)
+  {
+    if (relayStates[i]
+    // нужен массив pre-states чтобы постоянно не задавать лапе изменение уровня, зачем это делать если он не миенялся
+  }
   if(LED1status)
   {digitalWrite(LED1pin, HIGH);}
   else
